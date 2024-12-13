@@ -20,19 +20,22 @@ pipeline {
                 sh 'mvn clean test -P regression'
             }
         }
-        stage('Generate Report') {
-            steps {
-                // Archive the HTML report
-                archiveArtifacts artifacts: 'target/surefire-reports/*.html', fingerprint: true
-                
-                // Publish the HTML report
-                publishHTML([
-                    reportDir: 'target/surefire-reports', // Directory where reports are generated
-                    reportFiles: 'index.html',          // The main report file
-                    reportName: 'Test Report'          // Display name in Jenkins UI
-                ])
-            }
-        }
+stage('Generate Report') {
+    steps {
+        // Archive the HTML report
+        archiveArtifacts artifacts: 'target/surefire-reports/*.html', fingerprint: true
+        
+        // Publish the HTML report
+        publishHTML([
+            reportDir: 'target/surefire-reports',
+            reportFiles: 'index.html',
+            reportName: 'Test Report',
+            keepAll: true,
+            alwaysLinkToLastBuild: true,
+            allowMissing: false
+        ])
+    }
+}
         stage('Notify Teams') {
             steps {
                 script {
