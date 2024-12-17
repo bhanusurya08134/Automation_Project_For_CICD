@@ -16,7 +16,7 @@ pipeline {
             steps {
                 script {
                     // Run Maven build and tests
-                    def mvnStatus = sh(returnStatus: true, script: 'mvn clean test -P regression')
+                    def mvnStatus = bat(returnStatus: true, script: 'mvn clean test -P regression')
                     if (mvnStatus != 0) {
                         currentBuild.result = 'FAILURE'
                     }
